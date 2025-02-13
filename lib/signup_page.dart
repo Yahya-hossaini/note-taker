@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_project/home_page.dart';
 import 'package:supabase_project/widgets.dart';
+
+import 'auth_service.dart';
 
 class SignupPage extends StatelessWidget {
   static const routeName = 'signupPage';
@@ -8,6 +11,12 @@ class SignupPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController nameController = TextEditingController();
+    final TextEditingController emailController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
+    final TextEditingController confirmPasswordController = TextEditingController();
+
+
     return Scaffold(
       backgroundColor: const Color(0xFF0F172B),
       body: SingleChildScrollView(
@@ -45,26 +54,30 @@ class SignupPage extends StatelessWidget {
               const SizedBox(
                 height: 42,
               ),
-              const Column(
+              Column(
                 children: [
                   CustomTextField(
                     hintText: 'Enter your name.',
                     title: 'Name',
+                    controller: nameController,
                   ),
                   SizedBox(height: 20),
                   CustomTextField(
                     hintText: 'someone@gmail.com',
                     title: 'Email',
+                    controller: emailController,
                   ),
                   SizedBox(height: 20),
                   CustomTextField(
                     hintText: 'Password',
                     title: 'Password',
+                    controller: passwordController,
                   ),
                   SizedBox(height: 20),
                   CustomTextField(
                     hintText: 'Password',
                     title: 'Confirm Password',
+                    controller: confirmPasswordController,
                   ),
                 ],
               ),
@@ -72,7 +85,31 @@ class SignupPage extends StatelessWidget {
                 height: 42,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  if (passwordController.text != confirmPasswordController.text) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Passwords do not match')),
+                    );
+                    return;
+                  }
+
+                  String? error = await AuthService().signUp(
+                    nameController.text,
+                    emailController.text,
+                    passwordController.text,
+                  );
+
+                  if (error == null) {
+                    // Navigate to Login Page after successful signup
+                    Navigator.pushReplacementNamed(context, HomePage.routeName);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Account created! Please log in.')),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
+                    print(error);
+                  }
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
                       const Color(0xFF54F34F), // Rose-500 equivalent
@@ -86,7 +123,7 @@ class SignupPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Login',
+                        'Sign up',
                         style: TextStyle(color: Colors.black87, fontSize: 16),
                       ),
                       SizedBox(width: 10),
@@ -111,7 +148,7 @@ class SignupPage extends StatelessWidget {
                   TextButton(
                     onPressed: () {},
                     child: const Text(
-                      'Sign up',
+                      'Login',
                       style: TextStyle(
                         color: Color(0xFFD4D4D8),
                         fontSize: 16,

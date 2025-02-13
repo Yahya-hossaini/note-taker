@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_project/home_page.dart';
 import 'package:supabase_project/login_page.dart';
 import 'package:supabase_project/signup_page.dart';
 
@@ -22,10 +23,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: const SignupPage(),
+      home:  LoginPage(),
       routes: {
-        LoginPage.routeName : (ctx) => const LoginPage(),
+        LoginPage.routeName : (ctx) =>  LoginPage(),
         SignupPage.routeName: (ctx) => const SignupPage(),
+        HomePage.routeName: (ctx) => const HomePage(),
       },
     );
   }

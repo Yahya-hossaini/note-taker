@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_project/home_page.dart';
 import 'package:supabase_project/widgets.dart';
 
+import 'auth_service.dart';
+
 class LoginPage extends StatelessWidget {
+
   static const routeName = 'loginPage';
 
-  const LoginPage({super.key});
+  LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController emailController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
+
     return Scaffold(
       backgroundColor: const Color(0xFF0F172B),
       body: SingleChildScrollView(
@@ -45,16 +52,18 @@ class LoginPage extends StatelessWidget {
               const SizedBox(
                 height: 64,
               ),
-             const Column(
+              Column(
                children: [
                  CustomTextField(
                    hintText: 'someone@gmail.com',
                    title: 'Email',
+                   controller: emailController,
                  ),
-                 SizedBox(height: 20),
+                 const SizedBox(height: 20),
                  CustomTextField(
                    hintText: 'Password',
                    title: 'Password',
+                   controller: passwordController,
                  ),
                ],
              ),
@@ -62,7 +71,18 @@ class LoginPage extends StatelessWidget {
                 height: 64,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  String? error = await AuthService().signIn(
+                    emailController.text,
+                    passwordController.text,
+                  );
+                  if (error == null) {
+                    Navigator.pushReplacementNamed(context, HomePage.routeName); // Redirect on success
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
+                    print(error);
+                  }
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
                       const Color(0xFF54F34F), // Rose-500 equivalent
