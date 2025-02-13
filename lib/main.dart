@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_project/login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,70 +19,76 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(title: 'Flutter Demo', home: MyHomePage());
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  final _noteStream =
-      Supabase.instance.client.from('notes').stream(primaryKey: ['id']);
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Notes'),
-      ),
-      body: StreamBuilder<List<Map<String, dynamic>>>(
-        stream: _noteStream,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          final notes = snapshot.data!;
-
-          return ListView.builder(
-            itemCount: notes.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(notes[index]['body']),
-              );
-            },
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: ((context) {
-              return SimpleDialog(
-                title: const Text('Add a Note'),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                children: [
-                  TextFormField(
-                    onFieldSubmitted: (value) async {
-                      await Supabase.instance.client
-                          .from('notes')
-                          .insert({'body': value});
-                    },
-                  ),
-                ],
-              );
-            }),
-          );
-        },
-        child: const Icon(Icons.add),
-      ),
+    return MaterialApp(
+      title: 'Flutter Demo',
+      home: LoginPage(),
+      routes: {
+        LoginPage.routename : (ctx) => LoginPage(),
+      },
     );
   }
 }
+
+// class MyHomePage extends StatefulWidget {
+//   const MyHomePage({super.key});
+//
+//   @override
+//   State<MyHomePage> createState() => _MyHomePageState();
+// }
+//
+// class _MyHomePageState extends State<MyHomePage> {
+//   final _noteStream =
+//       Supabase.instance.client.from('notes').stream(primaryKey: ['id']);
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('My Notes'),
+//       ),
+//       body: StreamBuilder<List<Map<String, dynamic>>>(
+//         stream: _noteStream,
+//         builder: (context, snapshot) {
+//           if (!snapshot.hasData) {
+//             return const Center(
+//               child: CircularProgressIndicator(),
+//             );
+//           }
+//           final notes = snapshot.data!;
+//
+//           return ListView.builder(
+//             itemCount: notes.length,
+//             itemBuilder: (context, index) {
+//               return ListTile(
+//                 title: Text(notes[index]['body']),
+//               );
+//             },
+//           );
+//         },
+//       ),
+//       floatingActionButton: FloatingActionButton(
+//         onPressed: () {
+//           showDialog(
+//             context: context,
+//             builder: ((context) {
+//               return SimpleDialog(
+//                 title: const Text('Add a Note'),
+//                 contentPadding:
+//                     const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+//                 children: [
+//                   TextFormField(
+//                     onFieldSubmitted: (value) async {
+//                       await Supabase.instance.client
+//                           .from('notes')
+//                           .insert({'body': value});
+//                     },
+//                   ),
+//                 ],
+//               );
+//             }),
+//           );
+//         },
+//         child: const Icon(Icons.add),
+//       ),
+//     );
+//   }
+// }
