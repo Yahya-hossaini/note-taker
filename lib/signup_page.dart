@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_project/widgets.dart';
 
-class LoginPage extends StatelessWidget {
-  static const routeName = 'loginPage';
+class SignupPage extends StatelessWidget {
+  static const routeName = 'signupPage';
 
-  const LoginPage({super.key});
+  const SignupPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class LoginPage extends StatelessWidget {
                 height: 10,
               ),
               const Text(
-                'Login',
+                'Sign Up',
                 style: TextStyle(
                   color: Colors.white70,
                   fontSize: 24,
@@ -32,10 +32,10 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                height: 64,
+                height: 42,
               ),
               const Text(
-                'Welcome back to your personal note taker',
+                'Sign up for free',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.white70,
@@ -43,23 +43,33 @@ class LoginPage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(
-                height: 64,
+                height: 42,
               ),
-             const Column(
-               children: [
-                 CustomTextField(
-                   hintText: 'someone@gmail.com',
-                   title: 'Email',
-                 ),
-                 SizedBox(height: 20),
-                 CustomTextField(
-                   hintText: 'Password',
-                   title: 'Password',
-                 ),
-               ],
-             ),
+              const Column(
+                children: [
+                  CustomTextField(
+                    hintText: 'Enter your name.',
+                    title: 'Name',
+                  ),
+                  SizedBox(height: 20),
+                  CustomTextField(
+                    hintText: 'someone@gmail.com',
+                    title: 'Email',
+                  ),
+                  SizedBox(height: 20),
+                  CustomTextField(
+                    hintText: 'Password',
+                    title: 'Password',
+                  ),
+                  SizedBox(height: 20),
+                  CustomTextField(
+                    hintText: 'Password',
+                    title: 'Confirm Password',
+                  ),
+                ],
+              ),
               const SizedBox(
-                height: 64,
+                height: 42,
               ),
               ElevatedButton(
                 onPressed: () {},
