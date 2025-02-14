@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:supabase_project/home_page.dart';
-import 'package:supabase_project/login_page.dart';
-import 'package:supabase_project/signup_page.dart';
+import 'package:supabase_project/Screens/home_page.dart';
+import 'package:supabase_project/Screens/login_page.dart';
+import 'package:supabase_project/Screens/signup_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home:  LoginPage(),
+      home:  HomePage(),
       routes: {
         LoginPage.routeName : (ctx) =>  LoginPage(),
         SignupPage.routeName: (ctx) => const SignupPage(),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_project/home_page.dart';
-import 'package:supabase_project/widgets.dart';
+import 'package:supabase_project/Screens/home_page.dart';
+import 'package:supabase_project/Screens/login_page.dart';
+import 'package:supabase_project/widgets/custom_text_field.dart';
 
-import 'auth_service.dart';
+import '../auth_service.dart';
 
 class SignupPage extends StatelessWidget {
   static const routeName = 'signupPage';
@@ -146,7 +147,10 @@ class SignupPage extends StatelessWidget {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      const CircularProgressIndicator();
+                      Navigator.pushReplacementNamed(context, LoginPage.routeName);
+                    },
                     child: const Text(
                       'Login',
                       style: TextStyle(
