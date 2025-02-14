@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_project/widgets/custom_text_field.dart';
 
 import '../widgets/custom_appbar.dart';
 
@@ -8,8 +9,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+  final TextEditingController searchController = TextEditingController();
+
     return Scaffold(
-      backgroundColor: Color(0xFF1E2939),
+      backgroundColor: const Color(0xFF1E2939),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(
             MediaQuery.of(context).orientation == Orientation.portrait
@@ -25,31 +28,41 @@ class HomePage extends StatelessWidget {
         child: Center(
           child: Column(
             children: [
+              // Notes reader. it read the total amount of notes in app
               Container(
                 height: 135,
                 width: 320,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: Color(0xFF404040),
+                  color: const Color(0xFF404040),
                 ),
                 child: Column(
                   children: [
-                    SizedBox(height: 18,),
+                    const SizedBox(
+                      height: 18,
+                    ),
                     Container(
                       width: double.infinity,
-                      padding: EdgeInsets.only(left: 18),
-                      child: Text('Total Notes Number:', style: TextStyle(
-                        fontSize: 20,
-                        color: Theme.of(context).primaryColor
-                      ),),
+                      padding: const EdgeInsets.only(left: 18),
+                      child: Text(
+                        'Total Notes Number:',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Theme.of(context).primaryColor),
+                      ),
                     ),
-                    Text('63', style: TextStyle(
-                      fontSize: 48,
-                      color: Color(0xFF54F34F),
-                    ),),
+                    const Text(
+                      '63',
+                      style: TextStyle(
+                        fontSize: 48,
+                        color: Color(0xFF54F34F),
+                      ),
+                    ),
                   ],
                 ),
               ),
+              SizedBox(height: 36,),
+              CustomTextField(hintText: 'Enter the title', title: 'Search', controller: searchController),
             ],
           ),
         ),
