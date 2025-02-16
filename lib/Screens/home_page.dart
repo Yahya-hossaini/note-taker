@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:supabase_project/notes_provider.dart';
+import 'package:supabase_project/providers/notes_provider.dart';
+import 'package:supabase_project/styles.dart';
 import 'package:supabase_project/widgets/custom_text_field.dart';
 
 import '../widgets/custom_appbar.dart';
@@ -16,7 +17,7 @@ class HomePage extends StatelessWidget {
     final notesData = Provider.of<NotesProvider>(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xFF1E2939),
+      backgroundColor: kScaffoldColor,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(
             MediaQuery.of(context).orientation == Orientation.portrait
@@ -28,17 +29,17 @@ class HomePage extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
         child: Center(
           child: Column(
             children: [
               // Notes reader. it read the total amount of notes in app
               Container(
                 height: 135,
-                width: 320,
+                width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: const Color(0xFF404040),
+                  color: kCardColor,
                 ),
                 child: Column(
                   children: [
@@ -50,22 +51,17 @@ class HomePage extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 18),
                       child: Text(
                         'Total Notes Number:',
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: Theme.of(context).primaryColor),
+                        style: kNoteCounterTitleTextStyle,
                       ),
                     ),
                     Text(
                       '${notesData.notes.length}',
-                      style: TextStyle(
-                        fontSize: 48,
-                        color: Color(0xFF54F34F),
-                      ),
+                      style: kNoteCounterTextStyle,
                     ),
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 36,
               ),
               CustomTextField(
@@ -74,7 +70,7 @@ class HomePage extends StatelessWidget {
                 controller: searchController,
               ),
               // SizedBox(height: 12,),
-              Divider(
+              const Divider(
                 height: 30,
                 color: Colors.black87,
                 thickness: 1,
@@ -85,25 +81,14 @@ class HomePage extends StatelessWidget {
                   itemCount: notesData.notes.length,
                   itemBuilder: (context, index) {
                     final note = notesData.notes[index];
-                    // return ListTile(
-                    //   title: Text(note.title),
-                    //   subtitle: Text(DateFormat('yyyy-MM-dd HH:mm')
-                    //       .format(note.createdAt)),
-                    //   trailing: IconButton(
-                    //     icon: Icon(Icons.delete),
-                    //     onPressed: () {
-                    //       notesData.deleteNote(note.id);
-                    //     },
-                    //   ),
-                    // );
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 12),
                       child: Container(
                         width: double.infinity,
                         height: 67,
                         decoration: BoxDecoration(
-                          color: Color(0xFF404040),
-                          borderRadius: BorderRadius.circular(12)
+                          color: kCardColor,
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -114,14 +99,35 @@ class HomePage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(note.title, style: TextStyle(fontSize: 16, color: Theme.of(context).primaryColor),),
-                                  Text(DateFormat('yyyy-MM-dd HH:mm').format(note.createdAt), style: TextStyle(fontSize: 16, color: Theme.of(context).primaryColor),),
+                                  Text(
+                                    note.title,
+                                    style: kNoteCardTextStyle,
+                                  ),
+                                  Text(
+                                    DateFormat('yyyy-MM-dd HH:mm')
+                                        .format(note.createdAt),
+                                    style: kNoteCardTextStyle,
+                                  ),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  IconButton(onPressed: (){}, icon: Icon(Icons.delete, color: Colors.redAccent,),),
-                                  IconButton(onPressed: (){}, icon: Icon(Icons.open_in_new, color: Colors.white,),),
+                                  IconButton(
+                                    onPressed: () {
+                                      notesData.deleteNote(note.id);
+                                    },
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.redAccent,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(
+                                      Icons.open_in_new,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ],
@@ -139,7 +145,12 @@ class HomePage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: Icon(Icons.add),
+        backgroundColor: Color(0xFF54F34F),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50),
+        ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

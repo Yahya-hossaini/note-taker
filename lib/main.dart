@@ -4,7 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supabase_project/Screens/home_page.dart';
 import 'package:supabase_project/Screens/login_page.dart';
 import 'package:supabase_project/Screens/signup_page.dart';
-import 'package:supabase_project/notes_provider.dart';
+import 'package:supabase_project/providers/notes_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         primaryColor: const Color(0xFFD4D4D8),
       ),
       title: 'Flutter Demo',
-      home:  HomePage(),
+      home:  const HomePage(),
       routes: {
         LoginPage.routeName : (ctx) =>  LoginPage(),
         SignupPage.routeName: (ctx) => const SignupPage(),

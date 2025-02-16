@@ -33,6 +33,20 @@ class NotesProvider with ChangeNotifier {
           'Sociable on as carriage my position weddings raillery consider. Peculiar trifling absolute and wandered vicinity property yet. The and collecting motionless difficulty son. His hearing staying ten colonel met. Sex drew six easy four dear cold deny. Moderate children at of outweigh it. Unsatiable it considered invitation he travelling insensible.',
       createdAt: DateTime.now(),
     ),
+    Notes(
+      id: '5',
+      title: 'Geometery',
+      content:
+      'Surprise steepest recurred landlord mr wandered amounted of. Continuing devonshire but considered its. Rose past oh shew roof is song neat. Do depend better praise do friend garden an wonder to. Intention age nay otherwise but breakfast. Around garden beyond to extent by.',
+      createdAt: DateTime.now(),
+    ),
+    Notes(
+      id: '6',
+      title: 'Literature',
+      content:
+      'Sociable on as carriage my position weddings raillery consider. Peculiar trifling absolute and wandered vicinity property yet. The and collecting motionless difficulty son. His hearing staying ten colonel met. Sex drew six easy four dear cold deny. Moderate children at of outweigh it. Unsatiable it considered invitation he travelling insensible.',
+      createdAt: DateTime.now(),
+    ),
   ];
   List<Notes> get notes {
     return [..._notes];

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_project/styles.dart';
 
 //Custom Text field
 
@@ -21,7 +22,7 @@ class CustomTextField extends StatelessWidget {
       style: const TextStyle(color: Colors.white70, fontSize: 16),
       decoration: InputDecoration(
         filled: true,
-        fillColor: const Color(0xFF2C2C2C), // Zinc-800 equivalent
+        fillColor: kTextFieldColor, // Zinc-800 equivalent
         hintText: hintText,
         hintStyle: const TextStyle(
           color: Colors.white38,
@@ -32,7 +33,10 @@ class CustomTextField extends StatelessWidget {
         ), // Zinc-400 equivalent
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(
+            width: 2,
+            color: Colors.black,
+          ),
         ),
       ),
     );

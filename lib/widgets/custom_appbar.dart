@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_project/styles.dart';
 
 class CustomAppbar extends StatelessWidget {
   final String rightSideSelector;
@@ -24,21 +25,21 @@ class CustomAppbar extends StatelessWidget {
               onPressed: () {},
               icon: const Icon(
                 Icons.menu,
-                color: Color(0xFFD4D4D8),
+                color: kPrimaryColor,
               ),
               iconSize: 32,
             ) : IconButton(
               onPressed: () {},
               icon: const Icon(
                 Icons.keyboard_arrow_left,
-                color: Color(0xFFD4D4D8),
+                color: kPrimaryColor,
               ),
               iconSize: 32,
             ),
             const Text(
               'My Notes',
               style: TextStyle(
-                color: Color(0xFFD4D4D8),
+                color: kPrimaryColor,
               ),
             ),
             rightSideSelector == 'save'
@@ -46,7 +47,7 @@ class CustomAppbar extends StatelessWidget {
               onPressed: () {},
               icon: const Icon(
                 Icons.save,
-                color: Color(0xFFD4D4D8),
+                color: kPrimaryColor,
               ),
               iconSize: 32,
             )
@@ -58,7 +59,7 @@ class CustomAppbar extends StatelessWidget {
           ],
         ),
         centerTitle: true,
-        backgroundColor: const Color(0xFF0F172B),
+        backgroundColor: kSignInUpScaffoldColor,
       ),
     );
   }
