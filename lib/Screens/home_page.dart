@@ -85,15 +85,48 @@ class HomePage extends StatelessWidget {
                   itemCount: notesData.notes.length,
                   itemBuilder: (context, index) {
                     final note = notesData.notes[index];
-                    return ListTile(
-                      title: Text(note.title),
-                      subtitle: Text(DateFormat('yyyy-MM-dd HH:mm')
-                          .format(note.createdAt)),
-                      trailing: IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          notesData.deleteNote(note.id);
-                        },
+                    // return ListTile(
+                    //   title: Text(note.title),
+                    //   subtitle: Text(DateFormat('yyyy-MM-dd HH:mm')
+                    //       .format(note.createdAt)),
+                    //   trailing: IconButton(
+                    //     icon: Icon(Icons.delete),
+                    //     onPressed: () {
+                    //       notesData.deleteNote(note.id);
+                    //     },
+                    //   ),
+                    // );
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Container(
+                        width: double.infinity,
+                        height: 67,
+                        decoration: BoxDecoration(
+                          color: Color(0xFF404040),
+                          borderRadius: BorderRadius.circular(12)
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(note.title, style: TextStyle(fontSize: 16, color: Theme.of(context).primaryColor),),
+                                  Text(DateFormat('yyyy-MM-dd HH:mm').format(note.createdAt), style: TextStyle(fontSize: 16, color: Theme.of(context).primaryColor),),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  IconButton(onPressed: (){}, icon: Icon(Icons.delete, color: Colors.redAccent,),),
+                                  IconButton(onPressed: (){}, icon: Icon(Icons.open_in_new, color: Colors.white,),),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     );
                   },
@@ -102,6 +135,10 @@ class HomePage extends StatelessWidget {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
       ),
     );
   }

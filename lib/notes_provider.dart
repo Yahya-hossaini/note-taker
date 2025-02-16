@@ -54,26 +54,50 @@ class NotesProvider with ChangeNotifier {
 
   Future<void> fetchNotes() async {
     try {
-      final response = await Supabase.instance.client.from('notes').select();
+      print("Fetching notes from Supabase...");
 
-      //convert response data to a list of notes objects
-      _notes = response.map<Notes>((json) => Notes.fromJson(json)).toList();
+      final response = await Supabase.instance.client
+          .from('notes')
+          .select();
+
+      if (response.isEmpty) {
+        print("No notes found in Supabase.");
+        _notes = [];
+      } else {
+        _notes = response.map<Notes>((json) => Notes.fromJson(json)).toList();
+        print("Fetched ${_notes.length} notes from Supabase.");
+      }
 
       notifyListeners();
     } catch (error) {
-      print('Error fetching notes: $error');
+      print("Error fetching notes: $error");
     }
   }
 
   Future<void> deleteNote(String id) async {
     try {
-      await Supabase.instance.client.from('notes').delete().eq('id', id);
+      print("Attempting to delete note with ID: $id");
 
-      // Remove the deleted note from the local list
-      _notes.remove((note) => note.id == id);
-      notifyListeners();
+      final response = await Supabase.instance.client
+          .from('notes')
+          .delete()
+          .eq('id', id);
+
+      print("Delete response: $response");
+
+      // If deletion is successful, remove from local list
+      _notes.removeWhere((note) => note.id == id);
+      notifyListeners(); // Update UI
+      print("Note deleted successfully!");
     } catch (error) {
-      print('Error deleting note: $error');
+      print("Error deleting note: $error");
     }
+
+    print("Deleting note with ID: $id");
+
+    _notes.removeWhere((note) => note.id == id); // Remove from local list
+    notifyListeners(); // Update UI
+
+    print("Note deleted successfully!");
   }
 }
