@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:supabase_project/notes_provider.dart';
 import 'package:supabase_project/widgets/custom_text_field.dart';
 
 import '../widgets/custom_appbar.dart';
@@ -9,7 +12,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  final TextEditingController searchController = TextEditingController();
+    final TextEditingController searchController = TextEditingController();
+    final notesData = Provider.of<NotesProvider>(context);
 
     return Scaffold(
       backgroundColor: const Color(0xFF1E2939),
@@ -51,8 +55,8 @@ class HomePage extends StatelessWidget {
                             color: Theme.of(context).primaryColor),
                       ),
                     ),
-                    const Text(
-                      '63',
+                    Text(
+                      '${notesData.notes.length}',
                       style: TextStyle(
                         fontSize: 48,
                         color: Color(0xFF54F34F),
@@ -61,8 +65,40 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 36,),
-              CustomTextField(hintText: 'Enter the title', title: 'Search', controller: searchController),
+              SizedBox(
+                height: 36,
+              ),
+              CustomTextField(
+                hintText: 'Enter the title',
+                title: 'Search',
+                controller: searchController,
+              ),
+              // SizedBox(height: 12,),
+              Divider(
+                height: 30,
+                color: Colors.black87,
+                thickness: 1,
+              ),
+              // ListView.builder(itemBuilder: (ctx, index) => NotesProvider());
+              Expanded(
+                child: ListView.builder(
+                  itemCount: notesData.notes.length,
+                  itemBuilder: (context, index) {
+                    final note = notesData.notes[index];
+                    return ListTile(
+                      title: Text(note.title),
+                      subtitle: Text(DateFormat('yyyy-MM-dd HH:mm')
+                          .format(note.createdAt)),
+                      trailing: IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () {
+                          notesData.deleteNote(note.id);
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),

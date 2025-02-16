@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supabase_project/Screens/home_page.dart';
 import 'package:supabase_project/Screens/login_page.dart';
 import 'package:supabase_project/Screens/signup_page.dart';
+import 'package:supabase_project/notes_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,11 +12,19 @@ void main() async {
   await Supabase.initialize(
     url: 'https://qoocexjshrajbffllgpw.supabase.co',
     anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvb2NleGpzaHJhamJmZmxsZ3B3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg4Mzk0MjEsImV4cCI6MjA1NDQxNTQyMX0.WlMiclnb_mcmeOnSFkw1t8fL-Brc5zpIGp6oRlWONFs',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvb2NleGpzaHJhamJmZmxsZ3B3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg4Mzk0MjEsImV4cCI6MjA1NDQxNTQyMX0.WlMiclnb_mcmeOnSFkw1t8fL-Brc5zpIGp6oRlWONFs',
   );
 
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => NotesProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
