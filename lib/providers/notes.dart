@@ -1,35 +1,22 @@
-import 'package:flutter/material.dart';
-
-class Notes with ChangeNotifier {
+class Notes {
   final String id;
   final String title;
   final String content;
   final DateTime createdAt;
 
-  Notes(
-      {required this.id,
-      required this.title,
-      required this.content,
-      required this.createdAt});
+  Notes({
+    required this.id,
+    required this.title,
+    required this.content,
+    required this.createdAt,
+  });
 
-  // Converting to JSON(for saving in database)
-  Map<String, dynamic> toJson() {
-    return {
-      'title': title,
-      'content': content,
-      'createdAt': createdAt,
-    };
-  }
-
-  //converting from JSON(when retrieving from database)
   factory Notes.fromJson(Map<String, dynamic> json) {
     return Notes(
-      id: json['id'],
-      title: json['title'],
-      content: json['content'],
-      createdAt: DateTime.parse(
-        json['createdAt'],
-      ),
+      id: json['id'] ?? '', // Handle null ID safely
+      title: json['title'] ?? 'Untitled', // Default title if null
+      content: json['content'] ?? 'No content', // Default content if null
+      createdAt: DateTime.tryParse(json['created_at'] ?? '') ?? DateTime.now(),
     );
   }
 }

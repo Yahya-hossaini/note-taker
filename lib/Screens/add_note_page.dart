@@ -31,6 +31,7 @@ class _AddNotePageState extends State<AddNotePage> {
     }
 
     Provider.of<NotesProvider>(context, listen: false).addNote(title, content);
+    Provider.of<NotesProvider>(context, listen: false).fetchNotes();
     Navigator.pushReplacementNamed(context, HomePage.routeName);
   }
 

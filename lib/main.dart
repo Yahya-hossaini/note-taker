@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         primaryColor: const Color(0xFFD4D4D8),
       ),
       title: 'Flutter Demo',
-      home:  LoginPage(),
+      home:  HomePage(),
       routes: {
         LoginPage.routeName : (ctx) =>  LoginPage(),
         SignupPage.routeName: (ctx) => const SignupPage(),

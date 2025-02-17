@@ -29,6 +29,8 @@ class NotesProvider with ChangeNotifier {
 
       final response = await Supabase.instance.client.from('notes').select();
 
+      print("Raw response from Supabase: $response");
+
       if (response.isEmpty) {
         print("No notes found in Supabase.");
         _notes = [];
@@ -37,7 +39,7 @@ class NotesProvider with ChangeNotifier {
         print("Fetched ${_notes.length} notes from Supabase.");
       }
 
-      notifyListeners();
+      notifyListeners(); // Notify UI to refresh
     } catch (error) {
       print("Error fetching notes: $error");
     }
