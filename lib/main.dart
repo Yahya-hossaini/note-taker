@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_project/Screens/add_note_page.dart';
 import 'package:supabase_project/Screens/home_page.dart';
 import 'package:supabase_project/Screens/login_page.dart';
 import 'package:supabase_project/Screens/signup_page.dart';
@@ -36,11 +37,12 @@ class MyApp extends StatelessWidget {
         primaryColor: const Color(0xFFD4D4D8),
       ),
       title: 'Flutter Demo',
-      home:  const HomePage(),
+      home:  LoginPage(),
       routes: {
         LoginPage.routeName : (ctx) =>  LoginPage(),
         SignupPage.routeName: (ctx) => const SignupPage(),
         HomePage.routeName: (ctx) => const HomePage(),
+        AddNotePage.routeName: (ctx) => const AddNotePage(),
       },
     );
   }

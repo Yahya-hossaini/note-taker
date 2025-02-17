@@ -6,7 +6,7 @@ import 'package:supabase_project/widgets/custom_text_field.dart';
 import '../auth_service.dart';
 
 class SignupPage extends StatelessWidget {
-  static const routeName = 'signupPage';
+  static const routeName = '/signupPage';
 
   const SignupPage({super.key});
 

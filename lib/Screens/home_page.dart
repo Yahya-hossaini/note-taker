@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_project/Screens/add_note_page.dart';
 import 'package:supabase_project/providers/notes_provider.dart';
 import 'package:supabase_project/styles.dart';
 import 'package:supabase_project/widgets/custom_text_field.dart';
@@ -8,7 +9,7 @@ import 'package:supabase_project/widgets/custom_text_field.dart';
 import '../widgets/custom_appbar.dart';
 
 class HomePage extends StatelessWidget {
-  static const routeName = 'homepage';
+  static const routeName = '/homepage';
   const HomePage({super.key});
 
   @override
@@ -75,7 +76,6 @@ class HomePage extends StatelessWidget {
                 color: Colors.black87,
                 thickness: 1,
               ),
-              // ListView.builder(itemBuilder: (ctx, index) => NotesProvider());
               Expanded(
                 child: ListView.builder(
                   itemCount: notesData.notes.length,
@@ -143,7 +143,9 @@ class HomePage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, AddNotePage.routeName);
+        },
         child: Icon(Icons.add),
         backgroundColor: Color(0xFF54F34F),
         shape: RoundedRectangleBorder(

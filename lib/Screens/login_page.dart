@@ -7,7 +7,7 @@ import '../auth_service.dart';
 
 class LoginPage extends StatelessWidget {
 
-  static const routeName = 'loginPage';
+  static const routeName = '/loginPage';
 
   LoginPage({super.key});
 
