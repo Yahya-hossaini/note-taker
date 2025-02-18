@@ -18,6 +18,7 @@ class CustomAppbar extends StatelessWidget {
         bottom: Radius.circular(18),
       ),
       child: AppBar(
+        automaticallyImplyLeading: false,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

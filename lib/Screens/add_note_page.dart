@@ -52,12 +52,18 @@ class _AddNotePageState extends State<AddNotePage> {
           children: [
             TextField(
               controller: _titleController,
+              style: const TextStyle(
+                color: kPrimaryColor,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
               decoration: const InputDecoration(
                   hintText: 'Title',
                   hintStyle: TextStyle(
-                      color: kPrimaryColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
+                    color: Colors.white38,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                   border: InputBorder.none),
             ),
             const SizedBox(
@@ -66,11 +72,15 @@ class _AddNotePageState extends State<AddNotePage> {
             Expanded(
               child: TextField(
                 controller: _contentController,
+                style: const TextStyle(
+                  color: kPrimaryColor,
+                  fontSize: 16,
+                ),
                 maxLines: null,
                 keyboardType: TextInputType.multiline,
                 decoration: const InputDecoration(
-                  hintText: 'Write your note here',
-                  hintStyle: TextStyle(color: kPrimaryColor),
+                  hintText: 'Write your note here....',
+                  hintStyle: TextStyle(color: Colors.white38),
                   border: InputBorder.none,
                 ),
               ),
@@ -83,19 +93,22 @@ class _AddNotePageState extends State<AddNotePage> {
         child: Container(
           height: 36,
           width: 124,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text('Add', style: TextStyle(fontSize: 16),),
-                Icon(Icons.add),
-              ],
-            ),
-          ),
           decoration: BoxDecoration(
             color: kButtonColor,
             borderRadius: BorderRadius.circular(6),
+          ),
+          child: const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  'Add',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                Icon(Icons.add),
+              ],
+            ),
           ),
         ),
       ),
