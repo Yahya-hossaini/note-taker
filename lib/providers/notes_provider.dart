@@ -21,6 +21,7 @@ class NotesProvider with ChangeNotifier {
     } else {
       print('Error: ${response.error!.message}');
     }
+    notifyListeners();
   }
 
   Future<void> fetchNotes() async {
@@ -61,12 +62,6 @@ class NotesProvider with ChangeNotifier {
     } catch (error) {
       print("Error deleting note: $error");
     }
-
-    print("Deleting note with ID: $id");
-
-    _notes.removeWhere((note) => note.id == id); // Remove from local list
-    notifyListeners(); // Update UI
-
-    print("Note deleted successfully!");
+    notifyListeners();
   }
 }

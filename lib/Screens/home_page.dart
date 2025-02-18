@@ -18,82 +18,72 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController _searchController = TextEditingController();
-  late Future<void> _fetchNotesFuture;
 
   @override
   void initState() {
     super.initState();
-    _fetchNotesFuture =
-        Provider.of<NotesProvider>(context, listen: false).fetchNotes();
+    Provider.of<NotesProvider>(context, listen: false).fetchNotes();
   }
 
   @override
   Widget build(BuildContext context) {
-    final notesData = Provider.of<NotesProvider>(context, listen: false);
-
-    return FutureBuilder(
-      future: notesData.fetchNotes(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-              child: CircularProgressIndicator()); // Show loading indicator
-        }
-
-        return Scaffold(
-          backgroundColor: kScaffoldColor,
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(
-                MediaQuery.of(context).orientation == Orientation.portrait
-                    ? 80
-                    : 60),
-            child: const CustomAppbar(
-              leftSideSelector: 'menu',
-              rightSideSelector: 'image',
-            ),
-          ),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
-            child: Center(
-              child: Column(
-                children: [
-                  Container(
-                    height: 135,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: kCardColor,
+    return Scaffold(
+      backgroundColor: kScaffoldColor,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(
+            MediaQuery.of(context).orientation == Orientation.portrait
+                ? 80
+                : 60),
+        child: const CustomAppbar(
+          leftSideSelector: 'menu',
+          rightSideSelector: 'image',
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
+        child: Center(
+          child: Column(
+            children: [
+              Container(
+                height: 135,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: kCardColor,
+                ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 18),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.only(left: 18),
+                      child: Text(
+                        'Total Notes Number:',
+                        style: kNoteCounterTitleTextStyle,
+                      ),
                     ),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 18),
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.only(left: 18),
-                          child: Text(
-                            'Total Notes Number:',
-                            style: kNoteCounterTitleTextStyle,
-                          ),
-                        ),
-                        Text(
+                    Consumer<NotesProvider>(
+                      builder: (context, notesData, child) {
+                        return Text(
                           '${notesData.notes.length}',
                           style: kNoteCounterTextStyle,
-                        ),
-                      ],
+                        );
+                      },
                     ),
-                  ),
-                  const SizedBox(height: 36),
-                  const SizedBox(
-                    height: 36,
-                  ),
-                  CustomTextField(
-                    hintText: 'Enter the title',
-                    title: 'Search',
-                    controller: _searchController,
-                  ),
-                  const Divider(
-                      height: 30, color: Colors.black87, thickness: 1),
-                  Expanded(
-                    child: ListView.builder(
+                  ],
+                ),
+              ),
+              const SizedBox(height: 36),
+              CustomTextField(
+                hintText: 'Enter the title',
+                title: 'Search',
+                controller: _searchController,
+              ),
+              const Divider(height: 30, color: Colors.black87, thickness: 1),
+              Expanded(
+                child: Consumer<NotesProvider>(
+                  builder: (context, notesData, child) {
+                    return ListView.builder(
                       itemCount: notesData.notes.length,
                       itemBuilder: (context, index) {
                         final note = notesData.notes[index];
@@ -107,12 +97,15 @@ class _HomePageState extends State<HomePage> {
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
@@ -120,7 +113,8 @@ class _HomePageState extends State<HomePage> {
                                         style: kNoteCardTextStyle,
                                       ),
                                       Text(
-                                        DateFormat('yyyy-MM-dd HH:mm').format(note.createdAt),
+                                        DateFormat('yyyy-MM-dd HH:mm')
+                                            .format(note.createdAt),
                                         style: kNoteCardTextStyle,
                                       ),
                                     ],
@@ -128,8 +122,11 @@ class _HomePageState extends State<HomePage> {
                                   Row(
                                     children: [
                                       IconButton(
-                                        onPressed: () {
-                                          notesData.deleteNote(note.id);
+                                        onPressed: () async {
+                                          await Provider.of<NotesProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .deleteNote(note.id);
                                         },
                                         icon: const Icon(
                                           Icons.delete,
@@ -151,23 +148,22 @@ class _HomePageState extends State<HomePage> {
                           ),
                         );
                       },
-                    ),
-                  ),
-                ],
+                    );
+                  },
+                ),
               ),
-            ),
+            ],
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              Navigator.pushNamed(context, AddNotePage.routeName);
-            },
-            child: Icon(Icons.add),
-            backgroundColor: Color(0xFF54F34F),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-          ),
-        );
-      },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, AddNotePage.routeName);
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Color(0xFF54F34F),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+      ),
     );
   }
 }
