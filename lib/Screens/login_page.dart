@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_project/Screens/home_page.dart';
-import 'package:supabase_project/Screens/signup_page.dart';
-import 'package:supabase_project/widgets/custom_text_field.dart';
+import 'package:my_notes/Screens/home_page.dart';
+import 'package:my_notes/Screens/signup_page.dart';
+import 'package:my_notes/widgets/custom_text_field.dart';
 
 import '../auth_service.dart';
 
@@ -24,7 +24,7 @@ class LoginPage extends StatelessWidget {
           child: Column(
             children: [
               Image.asset(
-                'assets/images/Logo.png',
+                'assets/images/Logo-app.png',
                 height: 113,
                 width: 113,
               ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_project/Screens/home_page.dart';
-import 'package:supabase_project/Screens/login_page.dart';
-import 'package:supabase_project/widgets/custom_text_field.dart';
+import 'package:my_notes/Screens/home_page.dart';
+import 'package:my_notes/Screens/login_page.dart';
+import 'package:my_notes/widgets/custom_text_field.dart';
 
 import '../auth_service.dart';
 
@@ -26,7 +26,7 @@ class SignupPage extends StatelessWidget {
           child: Column(
             children: [
               Image.asset(
-                'assets/images/Logo.png',
+                'assets/images/Logo-app.png',
                 height: 113,
                 width: 113,
               ),
@@ -102,7 +102,6 @@ class SignupPage extends StatelessWidget {
 
                   if (error == null) {
                     // Navigate to Login Page after successful signup
-                    Navigator.pushReplacementNamed(context, HomePage.routeName);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Account created! Please log in.')),
                     );
@@ -110,6 +109,7 @@ class SignupPage extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
                     print(error);
                   }
+                  Navigator.pushReplacementNamed(context, LoginPage.routeName);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor:

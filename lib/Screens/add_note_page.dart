@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:supabase_project/Screens/home_page.dart';
-import 'package:supabase_project/providers/notes_provider.dart';
-import 'package:supabase_project/styles.dart';
-import 'package:supabase_project/widgets/custom_appbar.dart';
+import 'package:my_notes/Screens/home_page.dart';
+import 'package:my_notes/providers/notes_provider.dart';
+import 'package:my_notes/styles.dart';
+import 'package:my_notes/widgets/custom_appbar.dart';
 
 class AddNotePage extends StatefulWidget {
   static const routeName = '/add-note-page';
@@ -44,7 +44,8 @@ class _AddNotePageState extends State<AddNotePage> {
           MediaQuery.of(context).orientation == Orientation.portrait ? 80 : 60,
         ),
         child: const CustomAppbar(
-            rightSideSelector: 'save', leftSideSelector: 'back'),
+          leftSideSelector: 'back',
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),

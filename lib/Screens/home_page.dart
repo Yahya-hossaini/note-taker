@@ -36,7 +36,6 @@ class _HomePageState extends State<HomePage> {
                 : 60),
         child: const CustomAppbar(
           leftSideSelector: 'menu',
-          rightSideSelector: 'image',
         ),
       ),
       body: Padding(

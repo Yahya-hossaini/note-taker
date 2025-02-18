@@ -40,4 +40,10 @@ class AuthService {
   Future<void> signOut() async {
     await supabase.auth.signOut();
   }
+
+  // Check if user is signed in
+  bool isSignedIn() {
+    final session = supabase.auth.currentSession;
+    return session != null;
+  }
 }

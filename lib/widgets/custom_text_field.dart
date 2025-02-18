@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_project/styles.dart';
+import 'package:my_notes/styles.dart';
 
 //Custom Text field
 

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_project/styles.dart';
+import 'package:my_notes/styles.dart';
+
+import '../auth_service.dart';
 
 class CustomAppbar extends StatelessWidget {
-  final String rightSideSelector;
   final String leftSideSelector;
 
   const CustomAppbar({
     super.key,
-    required this.rightSideSelector,
     required this.leftSideSelector,
   });
 
@@ -30,7 +30,9 @@ class CustomAppbar extends StatelessWidget {
               ),
               iconSize: 32,
             ) : IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
               icon: const Icon(
                 Icons.keyboard_arrow_left,
                 color: kPrimaryColor,
@@ -43,17 +45,8 @@ class CustomAppbar extends StatelessWidget {
                 color: kPrimaryColor,
               ),
             ),
-            rightSideSelector == 'save'
-                ? IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.save,
-                color: kPrimaryColor,
-              ),
-              iconSize: 32,
-            )
-                : Image.asset(
-              'assets/images/Logo.png',
+            Image.asset(
+              'assets/images/Logo-app.png',
               height: 48,
               width: 48,
             ),

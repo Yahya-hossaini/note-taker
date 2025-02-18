@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:supabase_project/Screens/add_note_page.dart';
-import 'package:supabase_project/Screens/home_page.dart';
-import 'package:supabase_project/Screens/login_page.dart';
-import 'package:supabase_project/Screens/signup_page.dart';
-import 'package:supabase_project/providers/notes_provider.dart';
+import 'package:my_notes/Screens/add_note_page.dart';
+import 'package:my_notes/Screens/home_page.dart';
+import 'package:my_notes/Screens/login_page.dart';
+import 'package:my_notes/Screens/signup_page.dart';
+import 'package:my_notes/providers/notes_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,8 +36,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: const Color(0xFFD4D4D8),
       ),
-      title: 'Flutter Demo',
-      home:  HomePage(),
+      title: 'My Notes',
+      home:  LoginPage(),
       routes: {
         LoginPage.routeName : (ctx) =>  LoginPage(),
         SignupPage.routeName: (ctx) => const SignupPage(),
@@ -48,66 +48,19 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// class MyHomePage extends StatefulWidget {
-//   const MyHomePage({super.key});
-//
-//   @override
-//   State<MyHomePage> createState() => _MyHomePageState();
-// }
-//
-// class _MyHomePageState extends State<MyHomePage> {
-//   final _noteStream =
-//       Supabase.instance.client.from('notes').stream(primaryKey: ['id']);
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('My Notes'),
-//       ),
-//       body: StreamBuilder<List<Map<String, dynamic>>>(
-//         stream: _noteStream,
-//         builder: (context, snapshot) {
-//           if (!snapshot.hasData) {
-//             return const Center(
-//               child: CircularProgressIndicator(),
-//             );
-//           }
-//           final notes = snapshot.data!;
-//
-//           return ListView.builder(
-//             itemCount: notes.length,
-//             itemBuilder: (context, index) {
-//               return ListTile(
-//                 title: Text(notes[index]['body']),
-//               );
-//             },
-//           );
-//         },
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: () {
-//           showDialog(
-//             context: context,
-//             builder: ((context) {
-//               return SimpleDialog(
-//                 title: const Text('Add a Note'),
-//                 contentPadding:
-//                     const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-//                 children: [
-//                   TextFormField(
-//                     onFieldSubmitted: (value) async {
-//                       await Supabase.instance.client
-//                           .from('notes')
-//                           .insert({'body': value});
-//                     },
-//                   ),
-//                 ],
-//               );
-//             }),
-//           );
-//         },
-//         child: const Icon(Icons.add),
-//       ),
-//     );
-//   }
-// }
+class AuthWidget extends StatelessWidget {
+  const AuthWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final session = Supabase.instance.client.auth.currentSession;
+
+    if(session != null){
+      return const HomePage();
+    }else{
+      return LoginPage();
+    }
+  }
+}
+
+
