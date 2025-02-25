@@ -37,9 +37,9 @@ class MyApp extends StatelessWidget {
         primaryColor: const Color(0xFFD4D4D8),
       ),
       title: 'My Notes',
-      home:  LoginPage(),
+      home: const AuthWidget(), // Use AuthWidget to check login state
       routes: {
-        LoginPage.routeName : (ctx) =>  LoginPage(),
+        LoginPage.routeName : (ctx) => LoginPage(),
         SignupPage.routeName: (ctx) => const SignupPage(),
         HomePage.routeName: (ctx) => const HomePage(),
         AddNotePage.routeName: (ctx) => const AddNotePage(),
@@ -55,12 +55,10 @@ class AuthWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final session = Supabase.instance.client.auth.currentSession;
 
-    if(session != null){
-      return const HomePage();
-    }else{
-      return LoginPage();
+    if (session != null) {
+      return const HomePage();  // Navigate to HomePage if logged in
+    } else {
+      return LoginPage(); // Navigate to LoginPage if not logged in
     }
   }
 }
-
-
