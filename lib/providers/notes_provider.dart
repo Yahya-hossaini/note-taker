@@ -10,10 +10,17 @@ class NotesProvider with ChangeNotifier {
   }
 
   Future<void> addNote(String title, String content) async {
+    final userId = Supabase.instance.client.auth.currentUser?.id;
+    if (userId == null) {
+      print("User is not logged in.");
+      return;
+    }
+
     final response = await Supabase.instance.client.from('notes').insert({
       'title': title,
       'content': content,
-      'created_at': DateTime.now().toIso8601String()
+      'user_id': userId, // Attach the user ID to the note
+      'created_at': DateTime.now().toIso8601String(),
     });
 
     if (response.error == null) {
@@ -24,11 +31,21 @@ class NotesProvider with ChangeNotifier {
     notifyListeners();
   }
 
+
   Future<void> fetchNotes() async {
     try {
-      print("Fetching notes from Supabase...");
+      final userId = Supabase.instance.client.auth.currentUser?.id;
+      if (userId == null) {
+        print("User is not logged in.");
+        return;
+      }
 
-      final response = await Supabase.instance.client.from('notes').select();
+      print("Fetching notes for user ID: $userId");
+
+      final response = await Supabase.instance.client
+          .from('notes')
+          .select()
+          .eq('user_id', userId); // Filter by user ID
 
       print("Raw response from Supabase: $response");
 
@@ -45,6 +62,7 @@ class NotesProvider with ChangeNotifier {
       print("Error fetching notes: $error");
     }
   }
+
 
   Future<void> deleteNote(String id) async {
     try {
