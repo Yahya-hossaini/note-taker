@@ -84,6 +84,10 @@ class _HomePageState extends State<HomePage> {
                 hintText: 'Enter the title',
                 title: 'Search',
                 controller: _searchController,
+                obscureText: false,
+                onChanged: (value){
+                  Provider.of<NotesProvider>(context, listen: false).searchNotes(value);
+                },
               ),
               const Divider(height: 30, color: Colors.black87, thickness: 1),
               Expanded(

@@ -5,9 +5,10 @@ import 'notes.dart';
 
 class NotesProvider with ChangeNotifier {
   List<Notes> _notes = [];
+  List<Notes> _filteredNotes = []; // Holds search results
 
   List<Notes> get notes {
-    return [..._notes];
+    return _filteredNotes.isNotEmpty ? _filteredNotes : _notes;
   }
 
   Future<void> addNote(String title, String content) async {
@@ -61,13 +62,23 @@ class NotesProvider with ChangeNotifier {
         _notes = response.map<Notes>((json) => Notes.fromJson(json)).toList();
         print("Fetched ${_notes.length} notes from Supabase.");
       }
-
+      _filteredNotes = []; // Reset search results
       notifyListeners(); // Notify UI to refresh
     } catch (error) {
       print("Error fetching notes: $error");
     }
   }
 
+  void searchNotes(String query) {
+    if (query.isEmpty) {
+      _filteredNotes = [];
+    } else {
+      _filteredNotes = _notes
+          .where((note) => note.title.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    }
+    notifyListeners();
+  }
 
   Future<void> deleteNote(String id) async {
     try {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_notes/Screens/home_page.dart';
 import 'package:my_notes/Screens/login_page.dart';
 import 'package:my_notes/widgets/custom_text_field.dart';
 
@@ -61,24 +60,28 @@ class SignupPage extends StatelessWidget {
                     hintText: 'Enter your name.',
                     title: 'Name',
                     controller: nameController,
+                    obscureText: false,
                   ),
                   SizedBox(height: 20),
                   CustomTextField(
                     hintText: 'someone@gmail.com',
                     title: 'Email',
                     controller: emailController,
+                    obscureText: false,
                   ),
                   SizedBox(height: 20),
                   CustomTextField(
                     hintText: 'Password',
                     title: 'Password',
                     controller: passwordController,
+                    obscureText: false,
                   ),
                   SizedBox(height: 20),
                   CustomTextField(
                     hintText: 'Password',
                     title: 'Confirm Password',
                     controller: confirmPasswordController,
+                    obscureText: false,
                   ),
                 ],
               ),
