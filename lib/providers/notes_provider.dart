@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:collection/collection.dart';
 import 'notes.dart';
 
 class NotesProvider with ChangeNotifier {
@@ -29,6 +30,10 @@ class NotesProvider with ChangeNotifier {
       print('Error: ${response.error!.message}');
     }
     notifyListeners();
+  }
+
+  Notes? findById(String id) {
+    return _notes.firstWhereOrNull((note) => note.id == id);
   }
 
 
@@ -82,4 +87,35 @@ class NotesProvider with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  Future<void> saveChanges(String id, String newTitle, String newContent) async {
+    try {
+      final response = await Supabase.instance.client.from('notes').update({
+        'title': newTitle,
+        'content': newContent,
+      }).eq('id', id);
+
+      if (response.error == null) {
+        print('Note updated successfully!');
+
+        // ✅ Update the local list
+        final index = _notes.indexWhere((note) => note.id == id);
+        if (index != -1) {
+          _notes[index] = Notes(
+            id: id,
+            title: newTitle,
+            content: newContent,
+            createdAt: _notes[index].createdAt, // Keep original date
+          );
+        }
+
+        notifyListeners(); // ✅ Notify UI
+      } else {
+        print('Error updating note: ${response.error!.message}');
+      }
+    } catch (error) {
+      print("Error saving changes: $error");
+    }
+  }
+
 }

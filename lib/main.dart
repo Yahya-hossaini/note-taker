@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_notes/Screens/edit_note_page.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:my_notes/Screens/add_note_page.dart';
@@ -13,7 +14,7 @@ void main() async {
   await Supabase.initialize(
     url: 'https://qoocexjshrajbffllgpw.supabase.co',
     anonKey:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvb2NleGpzaHJhamJmZmxsZ3B3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg4Mzk0MjEsImV4cCI6MjA1NDQxNTQyMX0.WlMiclnb_mcmeOnSFkw1t8fL-Brc5zpIGp6oRlWONFs',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvb2NleGpzaHJhamJmZmxsZ3B3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg4Mzk0MjEsImV4cCI6MjA1NDQxNTQyMX0.WlMiclnb_mcmeOnSFkw1t8fL-Brc5zpIGp6oRlWONFs',
   );
 
   runApp(
@@ -25,7 +26,6 @@ void main() async {
     ),
   );
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -39,10 +39,13 @@ class MyApp extends StatelessWidget {
       title: 'My Notes',
       home: const AuthWidget(), // Use AuthWidget to check login state
       routes: {
-        LoginPage.routeName : (ctx) => LoginPage(),
+        LoginPage.routeName: (ctx) => LoginPage(),
         SignupPage.routeName: (ctx) => const SignupPage(),
         HomePage.routeName: (ctx) => const HomePage(),
         AddNotePage.routeName: (ctx) => const AddNotePage(),
+        EditNotePage.routeName: (context) => EditNotePage(
+              noteId: ModalRoute.of(context)!.settings.arguments as String,
+            ),
       },
     );
   }
@@ -56,7 +59,7 @@ class AuthWidget extends StatelessWidget {
     final session = Supabase.instance.client.auth.currentSession;
 
     if (session != null) {
-      return const HomePage();  // Navigate to HomePage if logged in
+      return const HomePage(); // Navigate to HomePage if logged in
     } else {
       return LoginPage(); // Navigate to LoginPage if not logged in
     }

@@ -1,36 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:my_notes/providers/notes_provider.dart';
-import 'package:my_notes/styles.dart';
 import 'package:my_notes/widgets/custom_appbar.dart';
 
-class AddNotePage extends StatefulWidget {
-  static const routeName = '/add-note-page';
-  const AddNotePage({super.key});
+import '../styles.dart';
+
+
+class EditNotePage extends StatefulWidget {
+  static const routeName = '/edit-note-page';
+  final String noteId;
+
+  const EditNotePage({super.key, required this.noteId});
 
   @override
-  State<AddNotePage> createState() => _AddNotePageState();
+  State<EditNotePage> createState() => _EditNotePageState();
 }
 
-class _AddNotePageState extends State<AddNotePage> {
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _contentController = TextEditingController();
+class _EditNotePageState extends State<EditNotePage> {
+  final _titleController = TextEditingController();
+  final _contentController = TextEditingController();
 
-  void _saveNote() {
-    final title = _titleController.text.trim();
-    final content = _contentController.text.trim();
+  @override
+  void initState() {
+    super.initState();
+    final notesProvider = Provider.of<NotesProvider>(context, listen: false);
+    final note = notesProvider.findById(widget.noteId);
+    if (note != null) {
+      _titleController.text = note.title;
+      _contentController.text = note.content;
+    }
+  }
 
-    if (title.isEmpty || content.isEmpty) {
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _contentController.dispose();
+    super.dispose();
+  }
+
+  void _saveChanges() async {
+    if (_titleController.text.isEmpty || _contentController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Title and content cannot be empty'),
-        ),
+        SnackBar(content: Text('Title and content cannot be empty!')),
       );
       return;
     }
 
-    Provider.of<NotesProvider>(context, listen: false).addNote(title, content);
-    Provider.of<NotesProvider>(context, listen: false).fetchNotes();
+    final notesProvider = Provider.of<NotesProvider>(context, listen: false);
+    await notesProvider.saveChanges(
+      widget.noteId,
+      _titleController.text,
+      _contentController.text,
+    );
     Navigator.of(context).pop();
   }
 
@@ -89,7 +110,7 @@ class _AddNotePageState extends State<AddNotePage> {
         ),
       ),
       floatingActionButton: GestureDetector(
-        onTap: _saveNote,
+        onTap: _saveChanges,
         child: Container(
           height: 36,
           width: 124,
@@ -103,7 +124,7 @@ class _AddNotePageState extends State<AddNotePage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
-                  'Add',
+                  'Save',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 Icon(Icons.add),

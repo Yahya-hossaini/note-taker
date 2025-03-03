@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
 import '../providers/notes_provider.dart';
 import '../styles.dart';
 import '../widgets/custom_appbar.dart';
 import '../widgets/custom_text_field.dart';
 import 'add_note_page.dart';
+import 'edit_note_page.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/homepage';
@@ -24,6 +24,13 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     Provider.of<NotesProvider>(context, listen: false).fetchNotes();
   }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Provider.of<NotesProvider>(context, listen: false).fetchNotes();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -133,9 +140,15 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                       ),
                                       IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Navigator.pushNamed(
+                                            context,
+                                            EditNotePage.routeName,
+                                            arguments: note.id,
+                                          );
+                                        },
                                         icon: const Icon(
-                                          Icons.open_in_new,
+                                          Icons.edit,
                                           color: Colors.white,
                                         ),
                                       ),
