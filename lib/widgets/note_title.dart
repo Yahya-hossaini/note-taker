@@ -19,14 +19,7 @@ class NoteTitle extends StatelessWidget {
         fontSize: 20,
         fontWeight: FontWeight.bold,
       ),
-      decoration: const InputDecoration(
-          hintText: 'Title',
-          hintStyle: TextStyle(
-            color: Colors.white38,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-          border: InputBorder.none),
+      decoration: kNoteTitleInputDecoration,
     );
   }
 }

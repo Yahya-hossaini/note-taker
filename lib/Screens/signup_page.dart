@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_notes/Screens/login_page.dart';
+import 'package:my_notes/styles.dart';
 import 'package:my_notes/widgets/custom_text_field.dart';
 import '../auth_service.dart';
 
@@ -81,7 +82,7 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0F172B),
+      backgroundColor: kScaffoldColor,
       body: LayoutBuilder(
         builder: (context, constraints) {
           double height = constraints.maxHeight;
@@ -100,13 +101,9 @@ class _SignupPageState extends State<SignupPage> {
                     width: height * 0.12,
                   ),
                   SizedBox(height: height * 0.02),
-                  const Text(
+                  Text(
                     'Sign Up',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: kPageNameTextStyle,
                   ),
                   SizedBox(height: height * 0.04),
                   const Text(
@@ -124,47 +121,46 @@ class _SignupPageState extends State<SignupPage> {
                         title: 'Name',
                         controller: nameController,
                         obscureText: false,
+                        keyboardType: TextInputType.name,
                       ),
                       if (nameError != null)
-                        Text(nameError!, style: TextStyle(color: Colors.red, fontSize: 14)),
+                        Text(nameError!, style: kInputWarningTextStyle),
                       SizedBox(height: height * 0.02),
                       CustomTextField(
                         hintText: 'someone@gmail.com',
                         title: 'Email',
                         controller: emailController,
                         obscureText: false,
+                        keyboardType: TextInputType.emailAddress,
                       ),
                       if (emailError != null)
-                        Text(emailError!, style: TextStyle(color: Colors.red, fontSize: 14)),
+                        Text(emailError!, style: kInputWarningTextStyle),
                       SizedBox(height: height * 0.02),
                       CustomTextField(
                         hintText: 'Password',
                         title: 'Password',
                         controller: passwordController,
                         obscureText: true,
+                        keyboardType: TextInputType.visiblePassword,
                       ),
                       if (passwordError != null)
-                        Text(passwordError!, style: TextStyle(color: Colors.red, fontSize: 14)),
+                        Text(passwordError!, style: kInputWarningTextStyle),
                       SizedBox(height: height * 0.02),
                       CustomTextField(
                         hintText: 'Confirm Password',
                         title: 'Confirm Password',
                         controller: confirmPasswordController,
                         obscureText: true,
+                        keyboardType: TextInputType.visiblePassword,
                       ),
                       if (confirmPasswordError != null)
-                        Text(confirmPasswordError!, style: TextStyle(color: Colors.red, fontSize: 14)),
+                        Text(confirmPasswordError!, style: kInputWarningTextStyle),
                     ],
                   ),
                   SizedBox(height: height * 0.05),
                   ElevatedButton(
                     onPressed: signUp,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF54F34F),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
+                    style: kLoginSignupButtonStyle,
                     child: const Padding(
                       padding: EdgeInsets.symmetric(vertical: 15.0),
                       child: Row(
@@ -195,14 +191,9 @@ class _SignupPageState extends State<SignupPage> {
                         onPressed: () {
                           Navigator.pushNamed(context, LoginPage.routeName);
                         },
-                        child: const Text(
+                        child: Text(
                           'Login',
-                          style: TextStyle(
-                            color: Color(0xFFD4D4D8),
-                            fontSize: 16,
-                            decoration: TextDecoration.underline,
-                            decorationColor: Color(0xFFD4D4D8),
-                          ),
+                          style: kLoginSignupNavigatorTextStyle,
                         ),
                       ),
                     ],

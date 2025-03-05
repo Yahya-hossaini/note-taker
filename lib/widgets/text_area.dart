@@ -21,11 +21,7 @@ class TextArea extends StatelessWidget {
         ),
         maxLines: null,
         keyboardType: TextInputType.multiline,
-        decoration: const InputDecoration(
-          hintText: 'Write your note here....',
-          hintStyle: TextStyle(color: Colors.white38),
-          border: InputBorder.none,
-        ),
+        decoration: kTextAreaInputDecoration,
       ),
     );
   }

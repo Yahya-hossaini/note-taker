@@ -60,6 +60,7 @@ class _HomePageState extends State<HomePage> {
                 onChanged: (value){
                   Provider.of<NotesProvider>(context, listen: false).searchNotes(value);
                 },
+                keyboardType: TextInputType.name,
               ),
               const Divider(height: 30, color: Colors.black87, thickness: 1),
               Expanded(

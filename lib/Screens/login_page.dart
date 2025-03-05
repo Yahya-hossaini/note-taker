@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_notes/Screens/home_page.dart';
 import 'package:my_notes/Screens/signup_page.dart';
+import 'package:my_notes/styles.dart';
 import 'package:my_notes/widgets/custom_text_field.dart';
 import '../auth_service.dart';
 
@@ -28,7 +29,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   bool isValidEmail(String email) {
-    final RegExp regex = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
+    final RegExp regex = RegExp(
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
     return regex.hasMatch(email);
   }
 
@@ -36,9 +38,12 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       emailError = emailController.text.isEmpty
           ? "Please enter your email"
-          : (!isValidEmail(emailController.text) ? "Enter a valid email address" : null);
+          : (!isValidEmail(emailController.text)
+              ? "Enter a valid email address"
+              : null);
 
-      passwordError = passwordController.text.isEmpty ? "Please enter your password" : null;
+      passwordError =
+          passwordController.text.isEmpty ? "Please enter your password" : null;
     });
   }
 
@@ -55,7 +60,8 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     if (error == null) {
-      Navigator.pushReplacementNamed(context, HomePage.routeName); // Redirect on success
+      Navigator.pushReplacementNamed(
+          context, HomePage.routeName); // Redirect on success
     } else {
       handleLoginError(error);
     }
@@ -84,7 +90,8 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text("Account Not Found"),
-        content: const Text("It looks like there's no account with this email. Would you like to sign up?"),
+        content: const Text(
+            "It looks like there's no account with this email. Would you like to sign up?"),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -111,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
         double spacing = screenWidth > 600 ? 80 : 40;
 
         return Scaffold(
-          backgroundColor: const Color(0xFF0F172B),
+          backgroundColor: kScaffoldColor,
           body: Center(
             child: SingleChildScrollView(
               child: Padding(
@@ -126,13 +133,9 @@ class _LoginPageState extends State<LoginPage> {
                         width: 113,
                       ),
                       const SizedBox(height: 10),
-                      const Text(
+                      Text(
                         'Login',
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: kPageNameTextStyle,
                       ),
                       SizedBox(height: spacing),
                       const Text(
@@ -148,35 +151,33 @@ class _LoginPageState extends State<LoginPage> {
                             title: 'Email',
                             controller: emailController,
                             obscureText: false,
+                            keyboardType: TextInputType.emailAddress,
                           ),
                           if (emailError != null)
                             Padding(
                               padding: const EdgeInsets.only(top: 5),
-                              child: Text(emailError!, style: const TextStyle(color: Colors.red, fontSize: 14)),
+                              child: Text(emailError!,
+                                  style: kInputWarningTextStyle),
                             ),
                           const SizedBox(height: 20),
                           CustomTextField(
                             hintText: 'Password',
                             title: 'Password',
                             controller: passwordController,
-                            obscureText: true,
+                            obscureText: true, keyboardType: TextInputType.visiblePassword,
                           ),
                           if (passwordError != null)
                             Padding(
                               padding: const EdgeInsets.only(top: 5),
-                              child: Text(passwordError!, style: const TextStyle(color: Colors.red, fontSize: 14)),
+                              child: Text(passwordError!,
+                                  style: kInputWarningTextStyle),
                             ),
                         ],
                       ),
                       SizedBox(height: spacing),
                       ElevatedButton(
                         onPressed: login,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF54F34F),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
+                        style: kLoginSignupButtonStyle,
                         child: const Padding(
                           padding: EdgeInsets.symmetric(vertical: 15.0),
                           child: Row(
@@ -184,7 +185,8 @@ class _LoginPageState extends State<LoginPage> {
                             children: [
                               Text(
                                 'Login',
-                                style: TextStyle(color: Colors.black87, fontSize: 16),
+                                style: TextStyle(
+                                    color: Colors.black87, fontSize: 16),
                               ),
                               SizedBox(width: 10),
                               Icon(Icons.login, color: Colors.black87),
@@ -198,20 +200,19 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           const Text(
                             'Create Account?',
-                            style: TextStyle(color: Color(0xFFD4D4D8), fontSize: 16),
+                            style: TextStyle(
+                              color: Color(0xFFD4D4D8),
+                              fontSize: 16,
+                            ),
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, SignupPage.routeName);
+                              Navigator.pushNamed(
+                                  context, SignupPage.routeName);
                             },
-                            child: const Text(
+                            child: Text(
                               'Sign Up',
-                              style: TextStyle(
-                                color: Color(0xFFD4D4D8),
-                                fontSize: 16,
-                                decoration: TextDecoration.underline,
-                                decorationColor: Color(0xFFD4D4D8),
-                              ),
+                              style: kLoginSignupNavigatorTextStyle,
                             ),
                           ),
                         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_notes/Screens/login_page.dart';
 import 'package:my_notes/styles.dart';
 
 import '../auth_service.dart';
@@ -29,6 +30,7 @@ class CustomAppbar extends StatelessWidget {
               child: IconButton(
                 onPressed: () async {
                   await AuthService().signOut();
+                  Navigator.pushReplacementNamed(context, LoginPage.routeName);
                 } ,
                 icon: const Icon(
                   Icons.logout,
