@@ -5,10 +5,12 @@ import '../auth_service.dart';
 
 class CustomAppbar extends StatelessWidget {
   final String leftSideSelector;
+  final VoidCallback? onBackPressed;
 
   const CustomAppbar({
     super.key,
     required this.leftSideSelector,
+    this.onBackPressed,
   });
 
   @override
@@ -22,15 +24,20 @@ class CustomAppbar extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            leftSideSelector == 'menu' ? IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.menu,
-                color: kPrimaryColor,
+            if (leftSideSelector == 'logout') Transform.rotate(
+              angle: 180 * 3.1415926535897932 / 180,
+              child: IconButton(
+                onPressed: () async {
+                  await AuthService().signOut();
+                } ,
+                icon: const Icon(
+                  Icons.logout,
+                  color: kPrimaryColor,
+                ),
+                iconSize: 32,
               ),
-              iconSize: 32,
-            ) : IconButton(
-              onPressed: () {
+            ) else IconButton(
+              onPressed: onBackPressed ?? () {
                 Navigator.pop(context);
               },
               icon: const Icon(

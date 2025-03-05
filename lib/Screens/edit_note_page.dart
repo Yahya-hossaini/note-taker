@@ -5,7 +5,6 @@ import 'package:my_notes/widgets/custom_appbar.dart';
 
 import '../styles.dart';
 
-
 class EditNotePage extends StatefulWidget {
   static const routeName = '/edit-note-page';
   final String noteId;
@@ -19,6 +18,8 @@ class EditNotePage extends StatefulWidget {
 class _EditNotePageState extends State<EditNotePage> {
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
+  late String _initialTitle;
+  late String _initialContent;
 
   @override
   void initState() {
@@ -28,6 +29,8 @@ class _EditNotePageState extends State<EditNotePage> {
     if (note != null) {
       _titleController.text = note.title;
       _contentController.text = note.content;
+      _initialTitle = note.title;
+      _initialContent = note.content;
     }
   }
 
@@ -55,6 +58,42 @@ class _EditNotePageState extends State<EditNotePage> {
     Navigator.of(context).pop();
   }
 
+  void _showSaveChangesDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Save changes?'),
+          content: Text('Do you want to save changes before leaving?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+              child: Text('Discard'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _saveChanges();
+              },
+              child: Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _handleBackButton(){
+    if(_titleController.text != _initialTitle || _contentController.text != _initialContent){
+      _showSaveChangesDialog();
+    }else{
+      Navigator.pop(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,8 +102,9 @@ class _EditNotePageState extends State<EditNotePage> {
         preferredSize: Size.fromHeight(
           MediaQuery.of(context).orientation == Orientation.portrait ? 80 : 60,
         ),
-        child: const CustomAppbar(
+        child: CustomAppbar(
           leftSideSelector: 'back',
+          onBackPressed: _handleBackButton,
         ),
       ),
       body: Padding(

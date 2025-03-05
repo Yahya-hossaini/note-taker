@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
                 ? 80
                 : 60),
         child: const CustomAppbar(
-          leftSideSelector: 'menu',
+          leftSideSelector: 'logout',
         ),
       ),
       body: Padding(
