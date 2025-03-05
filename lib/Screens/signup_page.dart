@@ -24,6 +24,7 @@ class _SignupPageState extends State<SignupPage> {
   String? passwordError;
   String? confirmPasswordError;
 
+  //----------------------------------------------------------------------------
   @override
   void dispose() {
     nameController.dispose();
@@ -32,12 +33,14 @@ class _SignupPageState extends State<SignupPage> {
     confirmPasswordController.dispose();
     super.dispose();
   }
-
+  //----------------------------------------------------------------------------
+  //validating the email
   bool isValidEmail(String email) {
     final RegExp regex = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
     return regex.hasMatch(email);
   }
-
+  //----------------------------------------------------------------------------
+  //validating the inputs, making sure they won't be empty
   void validateFields() {
     setState(() {
       nameError = nameController.text.isEmpty ? "Please enter your name" : null;
@@ -52,7 +55,8 @@ class _SignupPageState extends State<SignupPage> {
           : (confirmPasswordController.text != passwordController.text ? "Passwords do not match" : null);
     });
   }
-
+  //----------------------------------------------------------------------------
+  //Sign up function
   Future<void> signUp() async {
     validateFields();
 
@@ -71,14 +75,14 @@ class _SignupPageState extends State<SignupPage> {
 
     if (error == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Account created! Please log in.')),
+        const SnackBar(content: Text('Account created! Please confirm your email and log in.')),
       );
       Navigator.pushReplacementNamed(context, LoginPage.routeName);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
     }
   }
-
+  //----------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,6 +119,7 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                   SizedBox(height: height * 0.04),
                   Column(
+                    //Input fields
                     children: [
                       CustomTextField(
                         hintText: 'Enter your name',
@@ -158,6 +163,7 @@ class _SignupPageState extends State<SignupPage> {
                     ],
                   ),
                   SizedBox(height: height * 0.05),
+                  //Sign up button here
                   ElevatedButton(
                     onPressed: signUp,
                     style: kLoginSignupButtonStyle,

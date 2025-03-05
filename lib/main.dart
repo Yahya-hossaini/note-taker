@@ -38,6 +38,7 @@ class MyApp extends StatelessWidget {
       ),
       title: 'My Notes',
       home: const AuthWidget(), // Use AuthWidget to check login state
+      //routes
       routes: {
         LoginPage.routeName: (ctx) => LoginPage(),
         SignupPage.routeName: (ctx) => const SignupPage(),

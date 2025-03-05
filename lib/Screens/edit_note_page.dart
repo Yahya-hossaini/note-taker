@@ -20,9 +20,11 @@ class EditNotePage extends StatefulWidget {
 class _EditNotePageState extends State<EditNotePage> {
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
+  // these two variables are using for storing initial data before changing
   late String _initialTitle;
   late String _initialContent;
 
+  //----------------------------------------------------------------------------
   @override
   void initState() {
     super.initState();
@@ -35,14 +37,15 @@ class _EditNotePageState extends State<EditNotePage> {
       _initialContent = note.content;
     }
   }
-
+  //----------------------------------------------------------------------------
   @override
   void dispose() {
     _titleController.dispose();
     _contentController.dispose();
     super.dispose();
   }
-
+  //----------------------------------------------------------------------------
+  //Saving the changes caused by user
   void _saveChanges() async {
     if (_titleController.text.isEmpty || _contentController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -59,7 +62,8 @@ class _EditNotePageState extends State<EditNotePage> {
     );
     Navigator.of(context).pop();
   }
-
+  //----------------------------------------------------------------------------
+  //showing dialog before user go back to homepage, assuring user saving the edited data
   void _showSaveChangesDialog() {
     showDialog(
       context: context,
@@ -87,15 +91,17 @@ class _EditNotePageState extends State<EditNotePage> {
       },
     );
   }
-
-  void _handleBackButton(){
-    if(_titleController.text != _initialTitle || _contentController.text != _initialContent){
+  //----------------------------------------------------------------------------
+  //make sure that user applied some changes
+  void _handleBackButton() {
+    if (_titleController.text != _initialTitle ||
+        _contentController.text != _initialContent) {
       _showSaveChangesDialog();
-    }else{
+    } else {
       Navigator.pop(context);
     }
   }
-
+  //----------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,17 +119,22 @@ class _EditNotePageState extends State<EditNotePage> {
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
         child: Column(
           children: [
+            //the first input for title
             NoteTitle(titleController: _titleController),
             const SizedBox(
               height: 10,
             ),
+            // the second input for writing the notes
             TextArea(contentController: _contentController),
           ],
         ),
       ),
+      //An add button for adding the notes to database
       floatingActionButton: GestureDetector(
         onTap: _saveChanges,
-        child: AddSaveButton(title: 'Save',),
+        child: AddSaveButton(
+          title: 'Save',
+        ),
       ),
     );
   }

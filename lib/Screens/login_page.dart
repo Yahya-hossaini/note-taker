@@ -17,10 +17,10 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
+  //storing email and password errors in these variables
   String? emailError;
   String? passwordError;
-
+  //----------------------------------------------------------------------------
   @override
   void dispose() {
     emailController.dispose();
@@ -28,12 +28,16 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  //----------------------------------------------------------------------------
+  //validating the email
   bool isValidEmail(String email) {
     final RegExp regex = RegExp(
         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
     return regex.hasMatch(email);
   }
 
+  //----------------------------------------------------------------------------
+  //validating the inputs, making sure they won't be empty
   void validateFields() {
     setState(() {
       emailError = emailController.text.isEmpty
@@ -47,6 +51,8 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
+  //----------------------------------------------------------------------------
+  //Login function
   Future<void> login() async {
     validateFields();
 
@@ -67,6 +73,8 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  //----------------------------------------------------------------------------
+  //handling some common errors
   void handleLoginError(String error) {
     if (error.contains("invalid_grant")) {
       showErrorSnackBar("Invalid email or password.");
@@ -79,12 +87,15 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  //----------------------------------------------------------------------------
   void showErrorSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message)),
     );
   }
 
+  //----------------------------------------------------------------------------
+  //when there is no account
   void showSignUpDialog() {
     showDialog(
       context: context,
@@ -109,6 +120,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  //----------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -145,6 +157,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(height: spacing),
                       Column(
+                        //Input fields
                         children: [
                           CustomTextField(
                             hintText: 'someone@gmail.com',
@@ -164,7 +177,8 @@ class _LoginPageState extends State<LoginPage> {
                             hintText: 'Password',
                             title: 'Password',
                             controller: passwordController,
-                            obscureText: true, keyboardType: TextInputType.visiblePassword,
+                            obscureText: true,
+                            keyboardType: TextInputType.visiblePassword,
                           ),
                           if (passwordError != null)
                             Padding(
@@ -175,6 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                       SizedBox(height: spacing),
+                      //Login button here
                       ElevatedButton(
                         onPressed: login,
                         style: kLoginSignupButtonStyle,

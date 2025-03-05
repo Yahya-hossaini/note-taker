@@ -19,6 +19,8 @@ class _AddNotePageState extends State<AddNotePage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
 
+  //----------------------------------------------------------------------------
+  //Saving the entered data
   void _saveNote() {
     final title = _titleController.text.trim();
     final content = _contentController.text.trim();
@@ -36,7 +38,7 @@ class _AddNotePageState extends State<AddNotePage> {
     Provider.of<NotesProvider>(context, listen: false).fetchNotes();
     Navigator.of(context).pop();
   }
-
+  //----------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,14 +55,17 @@ class _AddNotePageState extends State<AddNotePage> {
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
         child: Column(
           children: [
+            //the first input for title
             NoteTitle(titleController: _titleController),
             const SizedBox(
               height: 10,
             ),
+            // the second input for writing the notes
             TextArea(contentController: _contentController),
           ],
         ),
       ),
+      //An add button for adding the notes to database
       floatingActionButton: GestureDetector(
         onTap: _saveNote,
         child: AddSaveButton(title: 'Add'),

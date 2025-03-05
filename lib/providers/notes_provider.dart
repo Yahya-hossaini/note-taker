@@ -4,20 +4,27 @@ import 'package:collection/collection.dart';
 import 'notes.dart';
 
 class NotesProvider with ChangeNotifier {
-  List<Notes> _notes = [];
-  List<Notes> _filteredNotes = []; // Holds search results
 
+  //two lists, one for general notes, one for filtered notes.
+  List<Notes> _notes = [];
+  List<Notes> _filteredNotes = [];
+
+  //a getter for both lists since they are private
   List<Notes> get notes {
     return _filteredNotes.isNotEmpty ? _filteredNotes : _notes;
   }
 
+  //----------------------------------------------------------------------------
+  //The add not function
   Future<void> addNote(String title, String content) async {
+    //filtering based on user id
     final userId = Supabase.instance.client.auth.currentUser?.id;
     if (userId == null) {
       print("User is not logged in.");
       return;
     }
 
+    //receiving repose for inserting data in certain table
     final response = await Supabase.instance.client.from('notes').insert({
       'title': title,
       'content': content,
@@ -25,6 +32,7 @@ class NotesProvider with ChangeNotifier {
       'created_at': DateTime.now().toIso8601String(),
     });
 
+    //error handling
     if (response.error == null) {
       print('Note added successfully!');
     } else {
@@ -33,11 +41,14 @@ class NotesProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  //----------------------------------------------------------------------------
+  //finding note, based on id
   Notes? findById(String id) {
     return _notes.firstWhereOrNull((note) => note.id == id);
   }
 
-
+  //----------------------------------------------------------------------------
+  //fetching data from Supabase
   Future<void> fetchNotes() async {
     try {
       final userId = Supabase.instance.client.auth.currentUser?.id;
@@ -70,6 +81,8 @@ class NotesProvider with ChangeNotifier {
     }
   }
 
+  //----------------------------------------------------------------------------
+  //searching for a certain note based on name
   void searchNotes(String query) {
     if (query.isEmpty) {
       _filteredNotes = [];
@@ -81,6 +94,8 @@ class NotesProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  //----------------------------------------------------------------------------
+  //deleting notes based on id
   Future<void> deleteNote(String id) async {
     try {
       print("Attempting to delete note with ID: $id");
@@ -100,6 +115,8 @@ class NotesProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  //----------------------------------------------------------------------------
+  //saving the edited data
   Future<void> saveChanges(String id, String newTitle, String newContent) async {
     try {
       final response = await Supabase.instance.client.from('notes').update({
@@ -110,7 +127,7 @@ class NotesProvider with ChangeNotifier {
       if (response.error == null) {
         print('Note updated successfully!');
 
-        // ✅ Update the local list
+        // Update the local list
         final index = _notes.indexWhere((note) => note.id == id);
         if (index != -1) {
           _notes[index] = Notes(
@@ -122,7 +139,7 @@ class NotesProvider with ChangeNotifier {
           _notes.sort((a, b) => a.createdAt.compareTo(b.createdAt));// re-sorting the list. the a and b represent the two notes for comparing
         }
 
-        notifyListeners(); // ✅ Notify UI
+        notifyListeners();
       } else {
         print('Error updating note: ${response.error!.message}');
       }
@@ -130,5 +147,4 @@ class NotesProvider with ChangeNotifier {
       print("Error saving changes: $error");
     }
   }
-
 }

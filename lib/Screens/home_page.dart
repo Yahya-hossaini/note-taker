@@ -18,20 +18,21 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController _searchController = TextEditingController();
-
+  //----------------------------------------------------------------------------
+  //fetching data from server before everything
   @override
   void initState() {
     super.initState();
     Provider.of<NotesProvider>(context, listen: false).fetchNotes();
   }
-
+  //----------------------------------------------------------------------------
+  //fetching data if some dependencies or data have been changed
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     Provider.of<NotesProvider>(context, listen: false).fetchNotes();
   }
-
-
+  //----------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,8 +51,10 @@ class _HomePageState extends State<HomePage> {
         child: Center(
           child: Column(
             children: [
+              //counter for counting the number of notes
               NoteCounter(),
               const SizedBox(height: 36),
+              //A search bar for searching specific note by name
               CustomTextField(
                 hintText: 'Enter the title',
                 title: 'Search',
@@ -63,6 +66,7 @@ class _HomePageState extends State<HomePage> {
                 keyboardType: TextInputType.name,
               ),
               const Divider(height: 30, color: Colors.black87, thickness: 1),
+              //List of notes
               Expanded(
                 child: Consumer<NotesProvider>(
                   builder: (context, notesData, child) {
@@ -80,12 +84,13 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+      //button for navigating to add note page
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pushNamed(context, AddNotePage.routeName);
         },
         child: Icon(Icons.add),
-        backgroundColor: Color(0xFF54F34F),
+        backgroundColor: kButtonColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
       ),
     );
