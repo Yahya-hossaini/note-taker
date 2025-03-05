@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:my_notes/widgets/add_save_button.dart';
+import 'package:my_notes/widgets/note_title.dart';
+import 'package:my_notes/widgets/text_area.dart';
 import 'package:provider/provider.dart';
 import 'package:my_notes/providers/notes_provider.dart';
 import 'package:my_notes/styles.dart';
@@ -50,67 +53,17 @@ class _AddNotePageState extends State<AddNotePage> {
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
         child: Column(
           children: [
-            TextField(
-              controller: _titleController,
-              style: const TextStyle(
-                color: kPrimaryColor,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-              decoration: const InputDecoration(
-                  hintText: 'Title',
-                  hintStyle: TextStyle(
-                    color: Colors.white38,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  border: InputBorder.none),
-            ),
+            NoteTitle(titleController: _titleController),
             const SizedBox(
               height: 10,
             ),
-            Expanded(
-              child: TextField(
-                controller: _contentController,
-                style: const TextStyle(
-                  color: kPrimaryColor,
-                  fontSize: 16,
-                ),
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-                decoration: const InputDecoration(
-                  hintText: 'Write your note here....',
-                  hintStyle: TextStyle(color: Colors.white38),
-                  border: InputBorder.none,
-                ),
-              ),
-            ),
+            TextArea(contentController: _contentController),
           ],
         ),
       ),
       floatingActionButton: GestureDetector(
         onTap: _saveNote,
-        child: Container(
-          height: 36,
-          width: 124,
-          decoration: BoxDecoration(
-            color: kButtonColor,
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  'Add',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                Icon(Icons.add),
-              ],
-            ),
-          ),
-        ),
+        child: AddSaveButton(title: 'Add'),
       ),
     );
   }

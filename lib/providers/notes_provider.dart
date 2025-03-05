@@ -60,6 +60,7 @@ class NotesProvider with ChangeNotifier {
         _notes = [];
       } else {
         _notes = response.map<Notes>((json) => Notes.fromJson(json)).toList();
+        _notes.sort((a, b) => a.createdAt.compareTo(b.createdAt)); //sorting based on creation date
         print("Fetched ${_notes.length} notes from Supabase.");
       }
       _filteredNotes = []; // Reset search results
@@ -118,6 +119,7 @@ class NotesProvider with ChangeNotifier {
             content: newContent,
             createdAt: _notes[index].createdAt, // Keep original date
           );
+          _notes.sort((a, b) => a.createdAt.compareTo(b.createdAt));// re-sorting the list. the a and b represent the two notes for comparing
         }
 
         notifyListeners(); // ✅ Notify UI
