@@ -29,8 +29,12 @@ class CustomAppbar extends StatelessWidget {
               angle: 180 * 3.1415926535897932 / 180,
               child: IconButton(
                 onPressed: () async {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('You have successfully Logout.')),
+                  );
                   await AuthService().signOut();
                   Navigator.pushReplacementNamed(context, LoginPage.routeName);
+                  CircularProgressIndicator();
                 } ,
                 icon: const Icon(
                   Icons.logout,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_notes/Screens/login_page.dart';
 import 'package:my_notes/styles.dart';
 import 'package:my_notes/widgets/custom_text_field.dart';
 import '../auth_service.dart';
@@ -36,7 +35,7 @@ class _SignupPageState extends State<SignupPage> {
   //----------------------------------------------------------------------------
   //validating the email
   bool isValidEmail(String email) {
-    final RegExp regex = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
+    final RegExp regex = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
     return regex.hasMatch(email);
   }
   //----------------------------------------------------------------------------
@@ -75,9 +74,9 @@ class _SignupPageState extends State<SignupPage> {
 
     if (error == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Account created! Please confirm your email and log in.')),
+        const SnackBar(content: Text('Account created! Please log in.')),
       );
-      Navigator.pushReplacementNamed(context, LoginPage.routeName);
+      Navigator.of(context).pop();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
     }
@@ -195,7 +194,7 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, LoginPage.routeName);
+                          Navigator.of(context).pop();
                         },
                         child: Text(
                           'Login',

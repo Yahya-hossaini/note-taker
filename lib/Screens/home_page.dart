@@ -7,6 +7,7 @@ import '../widgets/custom_text_field.dart';
 import '../widgets/note_card.dart';
 import '../widgets/note_counter.dart';
 import 'add_note_page.dart';
+import 'package:flutter/services.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/homepage';
@@ -18,6 +19,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _searchController.dispose();
+  }
+
   //----------------------------------------------------------------------------
   //fetching data from server before everything
   @override
@@ -25,6 +33,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     Provider.of<NotesProvider>(context, listen: false).fetchNotes();
   }
+
   //----------------------------------------------------------------------------
   //fetching data if some dependencies or data have been changed
   @override
@@ -32,66 +41,105 @@ class _HomePageState extends State<HomePage> {
     super.didChangeDependencies();
     Provider.of<NotesProvider>(context, listen: false).fetchNotes();
   }
+
   //----------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kScaffoldColor,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(
-            MediaQuery.of(context).orientation == Orientation.portrait
-                ? 80
-                : 60),
-        child: const CustomAppbar(
-          leftSideSelector: 'logout',
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
-        child: Center(
-          child: Column(
-            children: [
-              //counter for counting the number of notes
-              NoteCounter(),
-              const SizedBox(height: 36),
-              //A search bar for searching specific note by name
-              CustomTextField(
-                hintText: 'Enter the title',
-                title: 'Search',
-                controller: _searchController,
-                obscureText: false,
-                onChanged: (value){
-                  Provider.of<NotesProvider>(context, listen: false).searchNotes(value);
-                },
-                keyboardType: TextInputType.name,
-              ),
-              const Divider(height: 30, color: Colors.black87, thickness: 1),
-              //List of notes
-              Expanded(
-                child: Consumer<NotesProvider>(
-                  builder: (context, notesData, child) {
-                    return ListView.builder(
-                      itemCount: notesData.notes.length,
-                      itemBuilder: (context, index) {
-                        final note = notesData.notes[index];
-                        return NoteCard(note: note);
-                      },
-                    );
-                  },
-                ),
-              ),
-            ],
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (!didPop) {
+          // Show confirmation dialog
+          final shouldExit = await showDialog<bool>(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Exit App'),
+                content: const Text('Are you sure you want to exit the app?'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(false); // Stay in app
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(true); // Exit app
+                    },
+                    child: const Text('Exit'),
+                  ),
+                ],
+              );
+            },
+          );
+
+          if (shouldExit ?? false) {
+            // Exit the app using SystemNavigator
+            SystemNavigator.pop();
+          }
+        }
+      },
+      child: Scaffold(
+        backgroundColor: kScaffoldColor,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(
+              MediaQuery.of(context).orientation == Orientation.portrait
+                  ? 80
+                  : 60),
+          child: const CustomAppbar(
+            leftSideSelector: 'logout',
           ),
         ),
-      ),
-      //button for navigating to add note page
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, AddNotePage.routeName);
-        },
-        child: Icon(Icons.add),
-        backgroundColor: kButtonColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
+          child: Center(
+            child: Column(
+              children: [
+                //counter for counting the number of notes
+                NoteCounter(),
+                const SizedBox(height: 36),
+                //A search bar for searching specific note by name
+                CustomTextField(
+                  hintText: 'Enter the title',
+                  title: 'Search',
+                  controller: _searchController,
+                  obscureText: false,
+                  onChanged: (value) {
+                    Provider.of<NotesProvider>(context, listen: false)
+                        .searchNotes(value);
+                  },
+                  keyboardType: TextInputType.name,
+                ),
+                const Divider(height: 30, color: Colors.black87, thickness: 1),
+                //List of notes
+                Expanded(
+                  child: Consumer<NotesProvider>(
+                    builder: (context, notesData, child) {
+                      return ListView.builder(
+                        itemCount: notesData.notes.length,
+                        itemBuilder: (context, index) {
+                          final note = notesData.notes[index];
+                          return NoteCard(note: note);
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        //button for navigating to add note page
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, AddNotePage.routeName);
+          },
+          child: Icon(Icons.add),
+          backgroundColor: kButtonColor,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+        ),
       ),
     );
   }

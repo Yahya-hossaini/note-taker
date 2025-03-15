@@ -39,36 +39,84 @@ class _AddNotePageState extends State<AddNotePage> {
     Navigator.of(context).pop();
   }
   //----------------------------------------------------------------------------
+  //showing dialog before user go back to homepage, assuring user saving the edited data
+  void _showSaveChangesDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Save your note?'),
+          content: Text('Do you want to save your note before leaving?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+              child: Text('Discard'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _saveNote();
+              },
+              child: Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  //----------------------------------------------------------------------------
+  //to make sure user save note before leaving. handling the back buttons
+  _handleTextFields(){
+    final title = _titleController.text.trim();
+    final content = _contentController.text.trim();
+
+    if(title.isNotEmpty || content.isNotEmpty){
+      _showSaveChangesDialog();
+    }else{
+      Navigator.pop(context);
+    }
+  }
+  //----------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kScaffoldColor,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(
-          MediaQuery.of(context).orientation == Orientation.portrait ? 80 : 60,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (_) async{
+        await _handleTextFields();
+      },
+      child: Scaffold(
+        backgroundColor: kScaffoldColor,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(
+            MediaQuery.of(context).orientation == Orientation.portrait ? 80 : 60,
+          ),
+          child: CustomAppbar(
+            leftSideSelector: 'back',
+            onBackPressed: _handleTextFields,
+          ),
         ),
-        child: const CustomAppbar(
-          leftSideSelector: 'back',
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
+          child: Column(
+            children: [
+              //the first input for title
+              NoteTitle(titleController: _titleController),
+              const SizedBox(
+                height: 10,
+              ),
+              // the second input for writing the notes
+              TextArea(contentController: _contentController),
+            ],
+          ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
-        child: Column(
-          children: [
-            //the first input for title
-            NoteTitle(titleController: _titleController),
-            const SizedBox(
-              height: 10,
-            ),
-            // the second input for writing the notes
-            TextArea(contentController: _contentController),
-          ],
+        //An add button for adding the notes to database
+        floatingActionButton: GestureDetector(
+          onTap: _saveNote,
+          child: AddSaveButton(title: 'Add'),
         ),
-      ),
-      //An add button for adding the notes to database
-      floatingActionButton: GestureDetector(
-        onTap: _saveNote,
-        child: AddSaveButton(title: 'Add'),
       ),
     );
   }

@@ -93,7 +93,7 @@ class _EditNotePageState extends State<EditNotePage> {
   }
   //----------------------------------------------------------------------------
   //make sure that user applied some changes
-  void _handleBackButton() {
+  _handleBackButton(){
     if (_titleController.text != _initialTitle ||
         _contentController.text != _initialContent) {
       _showSaveChangesDialog();
@@ -104,36 +104,42 @@ class _EditNotePageState extends State<EditNotePage> {
   //----------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kScaffoldColor,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(
-          MediaQuery.of(context).orientation == Orientation.portrait ? 80 : 60,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (_) async{
+          await _handleBackButton();
+      },
+      child: Scaffold(
+        backgroundColor: kScaffoldColor,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(
+            MediaQuery.of(context).orientation == Orientation.portrait ? 80 : 60,
+          ),
+          child: CustomAppbar(
+            leftSideSelector: 'back',
+            onBackPressed: _handleBackButton,
+          ),
         ),
-        child: CustomAppbar(
-          leftSideSelector: 'back',
-          onBackPressed: _handleBackButton,
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
+          child: Column(
+            children: [
+              //the first input for title
+              NoteTitle(titleController: _titleController),
+              const SizedBox(
+                height: 10,
+              ),
+              // the second input for writing the notes
+              TextArea(contentController: _contentController),
+            ],
+          ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
-        child: Column(
-          children: [
-            //the first input for title
-            NoteTitle(titleController: _titleController),
-            const SizedBox(
-              height: 10,
-            ),
-            // the second input for writing the notes
-            TextArea(contentController: _contentController),
-          ],
-        ),
-      ),
-      //An add button for adding the notes to database
-      floatingActionButton: GestureDetector(
-        onTap: _saveChanges,
-        child: AddSaveButton(
-          title: 'Save',
+        //An add button for adding the notes to database
+        floatingActionButton: GestureDetector(
+          onTap: _saveChanges,
+          child: AddSaveButton(
+            title: 'Save',
+          ),
         ),
       ),
     );
