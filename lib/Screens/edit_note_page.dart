@@ -106,9 +106,6 @@ class _EditNotePageState extends State<EditNotePage> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (_) async{
-          await _handleBackButton();
-      },
       child: Scaffold(
         backgroundColor: kScaffoldColor,
         appBar: PreferredSize(

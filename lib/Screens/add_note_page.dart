@@ -84,9 +84,6 @@ class _AddNotePageState extends State<AddNotePage> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (_) async{
-        await _handleTextFields();
-      },
       child: Scaffold(
         backgroundColor: kScaffoldColor,
         appBar: PreferredSize(
